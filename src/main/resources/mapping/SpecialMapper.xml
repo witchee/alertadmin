@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.SpecialMapper">
+
+    <select id="getSpecialByUserid" resultType="com.example.demo.pojo.Special">
+        select * from tb_special where user_id=#{userid}
+    </select>
+
+    <delete id="deleteSpecial" parameterType="com.example.demo.pojo.Special">
+        delete from tb_special where user_id = #{userid}  and special_name=#{special_name}
+    </delete>
+
+    <insert id="addSpecial" parameterType="com.example.demo.pojo.Special">
+        insert into tb_special(user_id,special_name)
+        values(#{userid}, #{special_name})
+    </insert>
+</mapper>

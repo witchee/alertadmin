@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>报警后台管理系统</title>
+    <link href="static/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<script src="static/jquery-2.1.4/jquery.min.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        $('#addignore').click(function () {
+            var newignore = $('#newignore').val();
+            if(newignore.length==0)
+                alert("不可为空");
+            else{
+                $.ajax({
+                    url: "addignore",
+                    type: "post",
+                    data: {
+                        "newignore": newignore
+                    },
+                    dataType : "json",
+                    traditional: true,
+                    success: function(data) {
+                        var issuccess=data.issuccess;
+                        if(issuccess=="1"){
+                            alert("添加成功");
+                        }
+                        else{
+                            alert("添加失败");
+                        }
+                        window.location.href="globalignore"
+                    }
+                });
+            }
+        })
+    })
+</script>
+<table border="1" id="show_tab">
+    <thead>
+    <tr><td>忽略字段</td><td></td></tr>
+    </thead>
+    <tbody>
+    <tr th:each="ignore : ${ignorelist}">
+        <td th:text="${ignore.ignore_name}"></td>
+        <td><a th:href="@{deleteignore(ignore_name=${ignore.ignore_name})}">删除</a></td>
+    </tr>
+    </tbody>
+</table>
+<input id="newignore"><input type="button" value="添加忽略字段" id="addignore">
+<p><a th:href="showsource">返回</a></p>
+</body>
+</html>

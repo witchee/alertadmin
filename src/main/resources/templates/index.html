@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>报警后台管理系统</title>
+    <link href="static/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <p th:text="'Hello,'+${admin.admin_name}"></p>
+    <p><a href="changepassword">修改密码</a></p>
+    <p th:if="${admin.manage_user}==1"><a href="showuser">用户组管理</a></p>
+    <p th:if="${admin.manage_user}==1"><a href="showsubuser">用户管理</a></p>
+    <p><a href="showalert">报警信息查询</a></p>
+    <p th:if="${admin.manage_maintenance}==1"><a href="showsource">数据源管理</a></p>
+    <p th:if="${admin.manage_admin}==1"><a href="showadmin">管理员管理</a></p>
+    <p><a href="logout">退出登录</a></p>
+</body>
+</html>

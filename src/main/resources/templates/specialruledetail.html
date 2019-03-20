@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>报警后台管理系统</title>
+    <link href="static/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<script src="static/jquery-2.1.4/jquery.min.js" type="text/javascript"></script>
+<script th:inline="javascript">
+    $(function () {
+        $('#sourcechange').click(function () {
+            var start = $('#start').val();
+            var end = $('#end').val();
+            var recovery = $('#recovery').val();
+            var alert_status = $('#alert_status').val();
+            var special_name = [[${specialrule.special_name}]];
+            if(end<start)
+                alert("开始时间晚于结束时间")
+            else{
+                $.ajax({
+                    url: "changespecialrule",
+                    type: "post",
+                    data: {
+                        "start": start,
+                        "end": end,
+                        "recovery": recovery,
+                        "alert_status": alert_status,
+                        "special_name": special_name
+                    },
+                    dataType : "json",
+                    traditional: true,
+                    success: function(data) {
+                        var issuccess=data.issuccess;
+                        if(issuccess=="1"){
+                            alert("修改成功");
+                        }
+                        else{
+                            alert("修改失败");
+                        }
+                    }
+                });
+            }
+        })
+    })
+</script>
+<table border="1">
+    <tr><td>特殊规则字段名</td><td th:text="${specialrule.special_name}"></td></tr>
+    <tr><td>监控开始时间</td><td><input type="time" th:value="${specialrule.monitor_starttime}" id="start"></td></tr>
+    <tr><td>监控结束时间</td><td><input type="time" th:value="${specialrule.monitor_endtime}" id="end"></td></tr>
+    <tr><td>恢复时间</td><td><input type="time" th:value="${specialrule.recovery_time}" id="recovery"></td></tr>
+    <tr><td>报警状态</td>
+        <td>
+            <select id="alert_status" name="alert_status">
+                <option th:selected="${specialrule.alert_status}==1" value="1">接收报警</option>
+                <option th:selected="${specialrule.alert_status}==0" value="0">不接收报警</option>
+            </select>
+        </td>
+    </tr>
+</table>
+<p><input id="sourcechange" type="button" value="确认修改"></p>
+<p><a href="sourcespecial">返回</a></p>
+</body>
+</html>

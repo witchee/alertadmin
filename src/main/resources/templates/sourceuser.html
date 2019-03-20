@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>报警后台管理系统</title>
+    <link href="static/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<script src="static/jquery-2.1.4/jquery.min.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        $('#adduser').click(function () {
+            var newuser = $('#newuser').val();
+            $.ajax({
+                url: "addsourceuser",
+                type: "post",
+                data: {
+                    "newuser": newuser
+                },
+                dataType : "json",
+                traditional: true,
+                success: function(data) {
+                    var issuccess=data.issuccess;
+                    if(issuccess=="1"){
+                        alert("添加成功");
+                    }
+                    else{
+                        alert("添加失败");
+                    }
+                    window.location.href="sourceuser"
+                }
+            });
+        })
+    })
+</script>
+<table border="1">
+    <thead>
+    <tr><td>用户组</td><td></td></tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${userlist}">
+        <td th:text="${user.user_group_name}"></td>
+        <td><a th:href="@{removeuser(usergroupid=${user.user_group_id})}">移除</a></td>
+    </tr>
+    </tbody>
+</table>
+<p>
+    <select name="newuser" id="newuser">
+    <option value=""> -- 请选择 -- </option>
+    <option th:each="user:${unuserlist}"  th:value="${user.user_group_id}" th:text="${user.user_group_name}"></option>
+    </select>
+    <input id="adduser" type="button" value="添加关联用户组">
+</p>
+<p><a th:href="showsource">返回</a></p>
+</body>
+</html>

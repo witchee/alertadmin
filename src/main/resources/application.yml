@@ -1,0 +1,36 @@
+server:
+  port: 4000
+  context-path: /grafana_admin
+
+spring:
+    datasource:
+#        name: test
+#        url: jdbc:mysql://127.0.0.1:3306/monitor?useAffectedRows=true
+#        username: root
+#        password: 1234
+#        driver-class-name: com.mysql.jdbc.Driver
+#        url: jdbc:oracle:thin:@192.168.25.128:1521:orcl
+#        driver-class-name: oracle.jdbc.driver.OracleDriver
+#        username: scott
+#        password: tiger
+#        url: jdbc:oracle:thin:@163.10.10.135:1521:oratest
+#        driver-class-name: oracle.jdbc.driver.OracleDriver
+#        username: qrcodedev
+#        password: qrcodedev
+        url: jdbc:oracle:thin:@163.10.10.136:1521:qrcdb
+        driver-class-name: oracle.jdbc.driver.OracleDriver
+        username: qrcodeprod
+        password: e1&cNHaz
+    thymeleaf:
+        prefix: classpath:/templates/
+        suffix: .html
+        mode: LEGACYHTML5
+        encoding: utf-8
+        content-type: text/html
+        cache: false
+    mvc:
+        static-path-pattern: /static/**
+
+mybatis:
+  mapper-locations: classpath:mapping/*Mapper.xml
+  type-aliases-package: com.example.demo.pojo

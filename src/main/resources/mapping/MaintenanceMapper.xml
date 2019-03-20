@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.MaintenanceMapper">
+
+    <select id="getMaintenanceBySourceid" resultType="com.example.demo.pojo.Maintenance">
+        select * from tb_maintenance where source_id=#{sourceid}
+    </select>
+
+    <insert id="addMaintenanceBySourceid" parameterType="com.example.demo.pojo.Maintenance">
+        insert into tb_maintenance(maintenance_id,maintenance_detail,maintenance_starttime,maintenance_endtime,maintenance_status,source_id)
+        values(seq_on_maintenance.nextval,#{detail},#{start},#{end},'1',#{sourceid})
+    </insert>
+</mapper>

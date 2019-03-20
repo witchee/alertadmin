@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>报警后台管理系统</title>
+    <link href="static/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<script src="static/jquery-2.1.4/jquery.min.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        $('#addsource').click(function () {
+            var newsource = $('#newsource').val();
+            $.ajax({
+                url: "addusersource",
+                type: "post",
+                data: {
+                    "newsource": newsource
+                },
+                dataType : "json",
+                traditional: true,
+                success: function(data) {
+                    var issuccess=data.issuccess;
+                    if(issuccess=="1"){
+                        alert("添加成功");
+                    }
+                    else{
+                        alert("添加失败");
+                    }
+                    window.location.href="usersource"
+                }
+            });
+        })
+    })
+</script>
+<table border="1" id="show_tab">
+    <thead>
+    <tr><td>来源名</td><td></td></tr>
+    </thead>
+    <tbody id="tbodydata">
+    <tr th:each="source : ${sourcelist}">
+        <td th:text="${source.source_group_name}"></td>
+        <td><a th:href="@{removesource(sourceid=${source.source_group_id})}">移除</a></td>
+    </tr>
+    </tbody>
+</table>
+<p>
+    <select name="newuser" id="newsource">
+        <option value=""> -- 请选择 -- </option>
+        <option th:each="source:${unsourcelist}"  th:value="${source.source_group_id}" th:text="${source.source_group_name}"></option>
+    </select>
+    <input id="addsource" type="button" value="添加关联数据源组">
+</p>
+<p><a th:href="showuser">返回</a></p>
+</body>
+</html>

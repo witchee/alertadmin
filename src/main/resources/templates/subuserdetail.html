@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>报警后台管理系统</title>
+    <link href="static/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<script src="static/jquery-2.1.4/jquery.min.js" type="text/javascript"></script>
+<script th:inline="javascript">
+    $(function () {
+        $('#change').click(function () {
+            var username = $('#uname').val();
+            var tele = $('#utel').val();
+            var version = [[${subuser.version}]];
+            var userid = [[${subuser.user_id}]];
+            $.ajax({
+                url: "changesubuser",
+                type: "post",
+                data: {
+                    "username": username,
+                    "tele": tele,
+                    "userid": userid,
+                    "version": version
+                },
+                dataType : "json",
+                traditional: true,
+                success: function(data) {
+                    var issuccess=data.issuccess;
+                    if(issuccess=="1"){
+                        alert("修改成功");
+                    }
+                    else{
+                        alert("修改失败");
+                    }
+                    window.location.href="subuserdetail";
+                }
+            });
+        })
+    })
+</script>
+<table border="1" id="show_tab">
+    <tr><td>用户名</td><td><input th:value="${subuser.user_name}" id="uname"></td></tr>
+    <tr><td>电话</td><td><input th:value="${subuser.telephone}" id="utel"></td></tr>
+    <tr><td>创建人</td><td th:text="${subuser.create_name}"></td></tr>
+    <tr><td>创建时间</td><td th:text="${subuser.create_time}"></td></tr>
+    <tr><td>最后更新时间</td><td th:text="${subuser.last_update_time}"></td></tr>
+</table>
+<p><input type="button" value="修改" id="change"></p>
+<p><a th:href="showsubuser">返回</a></p>
+</body>
+</html>

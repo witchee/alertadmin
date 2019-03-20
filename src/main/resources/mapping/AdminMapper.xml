@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.AdminMapper">
+
+    <select id="findByNameAndPassword" resultType="com.example.demo.pojo.Administrator">
+        select * from tb_administrator where admin_name = #{name} and admin_password = #{password}
+    </select>
+
+    <select id="getAdminByName" resultType="com.example.demo.pojo.Administrator">
+        select * from tb_administrator where admin_name = #{name}
+    </select>
+
+    <update id="changePasswordByName" parameterType="com.example.demo.pojo.Administrator" >
+		update tb_administrator set admin_password = #{password},version = #{version}+1 where admin_name = #{name} and version = #{version}
+	</update>
+
+    <select id="getAllAdmin" resultType="com.example.demo.pojo.Administrator">
+        select * from tb_administrator
+    </select>
+
+    <update id="changeAdmin" parameterType="com.example.demo.pojo.Administrator" >
+		update tb_administrator set manage_user = #{manage_user},manage_maintenance = #{manage_maintenance},manage_admin = #{manage_admin},version = #{version}+1 where admin_name = #{admin_name} and version = #{version}
+	</update>
+
+    <insert id="addAdmin" parameterType="com.example.demo.pojo.Administrator">
+        insert into tb_administrator(admin_name,admin_password,manage_user,manage_maintenance,manage_admin)
+        values(#{adminname},#{password},'0','0','0')
+    </insert>
+</mapper>

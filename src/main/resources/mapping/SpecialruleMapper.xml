@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.SpecialruleMapper">
+
+    <select id="getSpecialruleBySourceid" resultType="com.example.demo.pojo.Specialrule">
+        select * from tb_specialrule where source_id=#{sourceid}
+    </select>
+
+    <select id="getSpecialrule" resultType="com.example.demo.pojo.Specialrule">
+        select * from tb_specialrule where source_id=#{sourceid} and special_name=#{specialname}
+    </select>
+
+    <update id="changeSpecialrule" parameterType="com.example.demo.pojo.Specialrule" >
+		update tb_specialrule set monitor_starttime = #{start},monitor_endtime = #{end},recovery_time = #{recovery},alert_status = #{alert_status} where source_id=#{sourceid} and special_name=#{special_name}
+	</update>
+
+    <delete id="removeSpecialrule" parameterType="com.example.demo.pojo.Specialrule">
+        delete from tb_specialrule where source_id = #{sourceid}  and special_name=#{specialname}
+    </delete>
+
+    <insert id="addSpecialrule" parameterType="com.example.demo.pojo.Specialrule">
+        insert into tb_specialrule(SOURCE_ID,SPECIAL_NAME,MONITOR_STARTTIME,MONITOR_ENDTIME,recovery_time,ALERT_STATUS)
+        values(#{sourceid},#{name},#{start},#{end},#{recovery},#{status})
+    </insert>
+</mapper>

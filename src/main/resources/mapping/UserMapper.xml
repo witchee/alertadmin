@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.UserMapper">
+
+    <select id="getAllUser" resultType="com.example.demo.pojo.UserGroup">
+        select * from tb_user_group
+    </select>
+
+    <select id="getAllSubUser" resultType="com.example.demo.pojo.UserInfo">
+        select * from tb_userinfo
+    </select>
+
+    <select id="getUserByGroup" resultType="com.example.demo.pojo.UserInfo">
+        select a.* from tb_userinfo a,tb_usergroup_user b where b.user_group_id=#{user_group_id} and a.user_id = b.user_id
+    </select>
+
+    <select id="getUserBySourceid" resultType="com.example.demo.pojo.UserGroup">
+        select a.* from tb_user_group a,tb_user_source b where a.user_group_id=b.user_id and b.source_id=#{sourceid}
+    </select>
+
+    <select id="getUserById" resultType="com.example.demo.pojo.UserInfo">
+        select * from tb_userinfo where user_id = #{user_id}
+    </select>
+
+    <delete id="removeUser" parameterType="com.example.demo.pojo.UserInfo">
+        delete from tb_user_source where source_id = #{sourceid}  and user_id=#{userid}
+    </delete>
+
+    <select id="getUserExceptSourceid" resultType="com.example.demo.pojo.UserGroup">
+        select * from tb_user_group where user_group_id not in (select user_id from tb_user_source where source_id=#{sourceid})
+    </select>
+
+    <select id="getUserExceptGroup" resultType="com.example.demo.pojo.UserInfo">
+        select * from tb_userinfo where user_id not in (select user_id from tb_usergroup_user where user_group_id=#{user_group_id})
+    </select>
+
+    <insert id="addSourceUser" parameterType="com.example.demo.pojo.UserInfo">
+        insert into tb_user_source(user_id,source_id)
+        values(#{userid}, #{sourceid})
+    </insert>
+
+    <insert id="addUser" parameterType="com.example.demo.pojo.UserGroup">
+        insert into tb_user_group(user_group_id,user_group_name)
+        values(seq_on_usergroup.nextval,#{username})
+    </insert>
+
+    <insert id="addGroupUser" parameterType="com.example.demo.pojo.UserGroup">
+        insert into tb_usergroup_user(user_group_id,user_id)
+        values(#{user_group_id},#{userid})
+    </insert>
+
+    <insert id="addSubUser" parameterType="com.example.demo.pojo.UserInfo">
+        insert into tb_userinfo(user_id,user_name,telephone,create_name,create_time,last_update_time,version)
+        values(seq_on_userinfo.nextval,#{username},#{telephone},#{createname},sysdate,sysdate,'0')
+    </insert>
+
+    <update id="changeSubUser" parameterType="com.example.demo.pojo.UserInfo" >
+		update tb_userinfo set user_name = #{username},telephone=#{telephone},last_update_time=sysdate,version = #{version}+1 where user_id = #{userid} and version = #{version}
+	</update>
+
+    <delete id="removeGroupUser" parameterType="com.example.demo.pojo.UserGroup">
+        delete from tb_usergroup_user where user_group_id = #{usergroupid}  and user_id=#{userid}
+    </delete>
+</mapper>

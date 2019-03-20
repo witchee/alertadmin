@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>报警后台管理系统</title>
+    <link href="static/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<script src="static/jquery-2.1.4/jquery.min.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        $('#addspecial').click(function () {
+            var newspecial = $('#newspecial').val();
+            $.ajax({
+                url: "addspecial",
+                type: "post",
+                data: {
+                    "newspecial": newspecial
+                },
+                dataType : "json",
+                traditional: true,
+                success: function(data) {
+                    var issuccess=data.issuccess;
+                    if(issuccess=="1"){
+                        alert("添加成功");
+                    }
+                    else{
+                        alert("添加失败");
+                    }
+                    window.location.href="subuserspecial"
+                }
+            });
+        })
+    })
+</script>
+<table border="1" id="show_tab">
+    <thead>
+    <tr><td>特殊字段</td><td></td></tr>
+    </thead>
+    <tbody>
+    <tr th:each="special : ${speciallist}">
+        <td th:text="${special.special_name}"></td>
+        <td><a th:href="@{deletespecial(special_name=${special.special_name})}">删除</a></td>
+    </tr>
+    </tbody>
+</table>
+<input id="newspecial"><input type="button" value="添加特殊字段" id="addspecial">
+<p><a th:href="showsubuser">返回</a></p>
+</body>
+</html>

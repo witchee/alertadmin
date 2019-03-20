@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>报警后台管理系统</title>
+    <link href="static/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<script src="static/jquery-2.1.4/jquery.min.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        $('#sourcechange').click(function () {
+            var start = $('#start').val();
+            var end = $('#end').val();
+            if(end<start)
+                alert("开始时间晚于结束时间")
+            else{
+                $.ajax({
+                    url: "changesource",
+                    type: "post",
+                    data: {
+                        "start": start,
+                        "end": end,
+                        "silent": "",
+                        "recovery": ""
+                    },
+                    dataType : "json",
+                    traditional: true,
+                    success: function(data) {
+                        var issuccess=data.issuccess;
+                        if(issuccess=="1"){
+                            alert("修改成功");
+                        }
+                        else{
+                            alert("修改失败");
+                        }
+                    }
+                });
+            }
+        })
+    })
+</script>
+<script src="static/laydate/laydate.js" type="text/javascript"></script>
+<script>
+    laydate.render({
+        elem: '#start',
+        type: 'time',
+        format: 'HH:mm'
+    });
+    laydate.render({
+        elem: '#end'
+        ,type: 'time'
+        ,format: 'HH:mm'
+    });
+</script>
+<table border="1">
+    <tr><td>全局监控开始时间</td><td><input type="text" th:value="${globalsource.monitor_starttime}" id="start"></td></tr>
+    <tr><td>全局监控结束时间</td><td><input type="text" th:value="${globalsource.monitor_endtime}" id="end"></td></tr>
+</table>
+<p><input id="sourcechange" type="button" value="确认修改"></p>
+<p><a href="showsource">返回</a></p>
+</body>
+</html>

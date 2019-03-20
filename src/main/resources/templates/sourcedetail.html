@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>报警后台管理系统</title>
+    <link href="static/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<script src="static/jquery-2.1.4/jquery.min.js" type="text/javascript"></script>
+<script src="static/laydate/laydate.js" type="text/javascript"></script>
+<script>
+    laydate.render({
+        elem: '#start',
+        type: 'time',
+        format: 'HH:mm'
+    });
+    laydate.render({
+        elem: '#end'
+        ,type: 'time'
+        ,format: 'HH:mm'
+    });
+    laydate.render({
+        elem: '#silent'
+        ,type: 'time'
+        ,format: 'HH:mm'
+    });
+    laydate.render({
+        elem: '#recovery'
+        ,type: 'time'
+        ,format: 'HH:mm'
+    });
+</script>
+<script>
+    $(function () {
+        $('#sourcechange').click(function () {
+            var start = $('#start').val();
+            var end = $('#end').val();
+            var silent = $('#silent').val();
+            var recovery = $('#recovery').val();
+            if(end<start)
+                alert("开始时间晚于结束时间")
+            else{
+                $.ajax({
+                    url: "/grafana_admin/changesource",
+                    type: "post",
+                    data: {
+                        "start": start,
+                        "end": end,
+                        "silent": silent,
+                        "recovery": recovery
+                    },
+                    dataType : "json",
+                    traditional: true,
+                    success: function(data) {
+                        var issuccess=data.issuccess;
+                        if(issuccess=="1"){
+                            alert("修改成功");
+                        }
+                        else{
+                            alert("修改失败");
+                        }
+                        window.location.href="sourcedetail"
+                    }
+                });
+            }
+        })
+    })
+</script>
+<table border="1">
+    <tr><td>来源名</td><td th:text="${sourcedetail.source_name}"></td></tr>
+    <tr><td>监控开始时间</td><td><input type="text" th:placeholder="${sourcedetail.monitor_starttime}" th:value="${sourcedetail.monitor_starttime}" id="start"></td></tr>
+    <tr><td>监控结束时间</td><td><input type="text" th:value="${sourcedetail.monitor_endtime}" id="end"></td></tr>
+    <tr><td>重发时间</td><td><input type="text" th:value="${sourcedetail.silent_time}" id="silent"></td></tr>
+    <tr><td>恢复时间</td><td><input type="text" th:value="${sourcedetail.recovery_time}" id="recovery"></td></tr>
+</table>
+<p><input id="sourcechange" type="button" value="确认修改"></p>
+<p><a href="sourcegroupdetail">返回</a></p>
+</body>
+</html>

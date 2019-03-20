@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>报警后台管理系统</title>
+    <link href="static/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<script src="static/jquery-2.1.4/jquery.min.js" type="text/javascript"></script>
+<script th:inline="javascript">
+    $(function () {
+        $('#change').click(function () {
+            var manage_user = $('#manage_user').val();
+            var manage_maintenance = $('#manage_maintenance').val();
+            var manage_admin = $('#manage_admin').val();
+            var admin_name = [[${admindetail.admin_name}]];
+            var version = [[${admindetail.version}]]
+            $.ajax({
+                url: "changeadmin",
+                type: "post",
+                data: {
+                    "manage_user": manage_user,
+                    "manage_maintenance": manage_maintenance,
+                    "manage_admin": manage_admin,
+                    "admin_name": admin_name,
+                    "version": version
+                },
+                dataType : "json",
+                traditional: true,
+                success: function(data) {
+                    var issuccess=data.issuccess;
+                    if(issuccess=="1"){
+                        alert("修改成功");
+                    }
+                    else{
+                        alert("修改失败");
+                    }
+                    window.location.href="showadmin";
+                }
+            });
+        })
+    })
+</script>
+<table border="1" id="show_tab">
+    <tr><td>管理员名</td><td><input th:value="${admindetail.admin_name}"></td></tr>
+    <tr><td>管理用户权限</td>
+        <td>
+            <select id="manage_user" name="manage_user">
+                <option th:selected="${admindetail.manage_user}==1" value="1">是</option>
+                <option th:selected="${admindetail.manage_user}==0" value="0">否</option>
+            </select>
+        </td>
+    </tr>
+    <tr><td>管理数据源权限</td>
+        <td>
+            <select id="manage_maintenance" name="manage_maintenance">
+                <option th:selected="${admindetail.manage_maintenance}==1" value="1">是</option>
+                <option th:selected="${admindetail.manage_maintenance}==0" value="0">否</option>
+            </select>
+        </td>
+    </tr>
+    <tr><td>管理管理员权限</td>
+        <td>
+            <select id="manage_admin" name="manage_admin">
+                <option th:selected="${admindetail.manage_admin}==1" value="1">是</option>
+                <option th:selected="${admindetail.manage_admin}==0" value="0">否</option>
+            </select>
+        </td>
+    </tr>
+</table>
+<p><input type="button" value="修改" id="change"></p>
+<p><a th:href="showadmin">返回</a></p>
+</body>
+</html>

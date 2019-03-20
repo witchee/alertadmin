@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.SourceMapper">
+
+    <select id="getAllSourceGroup" resultType="com.example.demo.pojo.SourceGroup">
+        select * from tb_source_group
+    </select>
+
+    <select id="getSourceBySourceid" resultType="com.example.demo.pojo.Source">
+        select * from tb_source where source_id = #{sourceid}
+    </select>
+
+    <select id="getSourceBySourceGroupid" resultType="com.example.demo.pojo.Source">
+        select * from tb_source where source_group_id = #{sourcegroupid}
+    </select>
+
+    <update id="changeSourceBySourceid" parameterType="com.example.demo.pojo.Source" >
+		update tb_source set monitor_starttime = #{start},monitor_endtime=#{end},silent_time=#{silent},recovery_time=#{recovery},version = #{version}+1,last_update_time=sysdate where source_id = #{sourceid} and version = #{version}
+	</update>
+
+    <select id="getSourceByUserid" resultType="com.example.demo.pojo.SourceGroup">
+        select a.* from tb_source_group a,tb_user_source b where a.source_group_id=b.source_id and b.user_id=#{userid}
+    </select>
+
+    <select id="getSourceExceptUserid" resultType="com.example.demo.pojo.SourceGroup">
+        select * from tb_source_group where source_group_id not in (select source_id from tb_user_source where user_id=#{userid})
+    </select>
+</mapper>
